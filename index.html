@@ -18,13 +18,13 @@ http://bl.ocks.org/mbostock/1093130
             height: 100%;
         }
 
-        .node circle {
+        g.node circle {
             cursor: pointer;
             stroke: #3182bd;
             stroke-width: 1.5px;
         }
 
-        .node text {
+        g.node text {
             font: 10px sans-serif;
             pointer-events: none;
             text-anchor: middle;
@@ -39,12 +39,12 @@ http://bl.ocks.org/mbostock/1093130
     </style>
 </head>
 <body>
-<script src='http://d3js.org/d3.v3.min.js'></script>
-<script src='bower_components/lodash/lodash.js'></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
 <script>
 
-    var width = window.innerWidth,
-        height = window.innerHeight;
+    var width = 800;// window.innerWidth,
+        height = 600;// window.innerHeight;
 
     var graph = {
             "creativeWork": [
@@ -78,12 +78,12 @@ http://bl.ocks.org/mbostock/1093130
                 { "source": 5, "target": 10 }
             ],
             "creativeWorkType": [
-                { "source": 0, "target": 0 },
-                { "source": 1, "target": 1 },
-                { "source": 2, "target": 0 },
-                { "source": 3, "target": 0 },
-                { "source": 4, "target": 0 },
-                { "source": 5, "target": 1 }
+                { "source": 0, "target": 6 },
+                { "source": 1, "target": 7 },
+                { "source": 2, "target": 6 },
+                { "source": 3, "target": 6 },
+                { "source": 4, "target": 6 },
+                { "source": 5, "target": 7 }
             ]
     };
 
@@ -91,35 +91,33 @@ http://bl.ocks.org/mbostock/1093130
             .attr('width', width)
             .attr('height', height);
 
+    var subject = true;
+
     var force = d3.layout.force()
             .size([width, height])
-            .linkDistance(500)
-            .gravity(0.08)
-            .linkStrength(0)
-            .charge(-500)
-            .friction(0)
-            .on("tick", tick);
+            .gravity(.05)
+            .distance(100)
+            .charge(-100)
+            .on('tick', tick);
+
+    svg.on('click', function() {
+        subject = !subject;
+        update();
+    });
 
     var link = svg.selectAll('.link');
-//            .attr('x1', function(d) { return nodes[d.source].x; })
-//            .attr('y1', function(d) { return nodes[d.source].y; })
-//            .attr('x2', function(d) { return nodes[d.target].x; })
-//            .attr('y2', function(d) { return nodes[d.target].y; });
-
     var node = svg.selectAll('.node');
-//            .data(nodes)
-//            .enter().append('circle')
-//            .attr('class', 'node')
-//            .attr('r', 10)
-//            .attr('cx', function(d) { return d.x; })
-//            .attr('cy', function(d) { return d.y; });
-
-    //var animationStep = 400;
 
     function update() {
-        var nodes = graph.creativeWork.concat(graph.subject);
-        var links = graph.creativeWorkSubject;
-        //var links = d3.layout.force().links(nodes);
+        var nodes, links; nodes
+
+        if (subject){
+            nodes = graph.creativeWork.concat(graph.subject);
+            links = graph.creativeWorkSubject;
+        } else {
+            nodes = graph.creativeWork.concat(graph.type);
+            links = graph.creativeWorkType;
+        }
 
         // Restart the force layout.
         force.nodes(nodes)
@@ -127,7 +125,7 @@ http://bl.ocks.org/mbostock/1093130
                 .start();
 
         // Update links.
-        link = link.data(links, function(d) { return d.target.id; });
+        link = link.data(links);
 
         link.exit().remove();
 
@@ -135,11 +133,14 @@ http://bl.ocks.org/mbostock/1093130
                 .attr("class", "link");
 
         // Update nodes.
-        node = node.data(nodes, function(d) { return d.id; });
+        node = node.data(nodes, function(d) {
+            return d.id;
+        });
 
         node.exit().remove();
 
-        var nodeEnter = node.enter().append("g")
+        var nodeEnter = node.enter()
+                .append("g")
                 .attr("class", "node")
                 .on("click", click)
                 .call(force.drag);
@@ -155,24 +156,15 @@ http://bl.ocks.org/mbostock/1093130
                 .style("fill", color);
     }
 
-    function tick() {
 
-        node.attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; });
+    function tick() {
 
         link.attr('x1', function(d) { return d.source.x; })
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
-//        node.transition().ease('linear').duration(animationStep)
-//                .attr('cx', function(d) { return d.x; })
-//                .attr('cy', function(d) { return d.y; });
-//
-//        link.transition().ease('linear').duration(animationStep)
-//                .attr('x1', function(d) { return d.source.x; })
-//                .attr('y1', function(d) { return d.source.y; })
-//                .attr('x2', function(d) { return d.target.x; })
-//                .attr('y2', function(d) { return d.target.y; });
+
+        node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
     }
 
     function color(d) {
@@ -183,34 +175,9 @@ http://bl.ocks.org/mbostock/1093130
 
     function click(d) {
         if (d3.event.defaultPrevented) return; // ignore drag
-        if (d.children) {
-            d._children = d.children;
-            d.children = null;
-        } else {
-            d.children = d._children;
-            d._children = null;
-        }
+        console.log(d.id);
         update();
     }
-
-//    force.on('tick', function() {
-//
-//
-//
-//        // We only show one tick at a time, so stop the layout
-//        // for now.
-//
-//        force.stop();
-//
-//        // If we're animating the layout, continue after
-//        // a delay to allow the animation to take effect.
-//
-//        setTimeout(
-//            function() { force.start(); },
-//            animationStep
-//        );
-//
-//    });
 
     update();
 

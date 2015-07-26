@@ -58,10 +58,9 @@
                 links = d3.layout.tree().links(nodes);
 
         // Restart the force layout.
-        force
-                .nodes(nodes)
-                .links(links)
-                .start();
+        force.nodes(nodes)
+            .links(links)
+            .start();
 
         // Update links.
         link = link.data(links, function(d) { return d.target.id; });

@@ -91,7 +91,8 @@
 
     var link = svg.selectAll('.link')
             .data(links)
-            .enter().append('line')
+            .enter()
+            .append('line')
             .attr('class', 'link')
             .attr('x1', function(d) { return nodes[d.source].x; })
             .attr('y1', function(d) { return nodes[d.source].y; })
@@ -100,7 +101,8 @@
 
     var node = svg.selectAll('.node')
             .data(nodes)
-            .enter().append('circle')
+            .enter()
+            .append('circle')
             .attr('class', 'node')
             .attr('r', 10)
             .attr('cx', function(d) { return d.x; })
