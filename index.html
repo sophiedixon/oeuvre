@@ -4,211 +4,109 @@
     <meta charset='utf-8'>
     <title>Force Layout Example 1</title>
     <style>
-
         * {
             margin: 0;
             padding: 0;
         }
-
         html, body {
             width: 100%;
             height: 100%;
         }
-
-        .node circle {
-            cursor: pointer;
-            stroke: #3182bd;
-            stroke-width: 1.5px;
+        .node {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: 2px;
         }
-
-        .node text {
-            font: 10px sans-serif;
-            pointer-events: none;
-            text-anchor: middle;
+        .link {
+            stroke: #777;
+            stroke-width: 2px;
         }
-
-        line.link {
-            fill: none;
-            stroke: #9ecae1;
-            stroke-width: 1.5px;
-        }
-
     </style>
 </head>
 <body>
 <script src='http://d3js.org/d3.v3.min.js'></script>
 <script>
-
     var width = window.innerWidth,
-        height = window.innerHeight;
-
+            height = window.innerHeight;
     var graph = {
-            "creativeWork": [
-                { id: "Wunschendorf" },
-                { id: "AndOnlyFineThreads" },
-                { id: "TheShore" },
-                { id: "ScholtzsHouse" },
-                { id: "LaMortedlarbe" },
-                { id: "TheArtofNarrative" }
-            ],
-            "subject": [
-                { id: "Memory" },
-                { id: "Identity" },
-                { id: "Mining" },
-                { id: "Exile" },
-                { id: "Storytelling" }
-            ],
-            "type": [
-                { id: "MovingImage" },
-                { id: "Text" }
-            ],
-            "creativeWorkSubject": [
-                { "source": 0, "target": 0 },
-                { "source": 0, "target": 3 },
-                { "source": 1, "target": 0 },
-                { "source": 2, "target": 1 },
-                { "source": 3, "target": 1 },
-                { "source": 3, "target": 3 },
-                { "source": 4, "target": 1 },
-                { "source": 4, "target": 2 },
-                { "source": 5, "target": 4 }
-            ],
-            "creativeWorkType": [
-                { "source": 0, "target": 0 },
-                { "source": 1, "target": 1 },
-                { "source": 2, "target": 0 },
-                { "source": 3, "target": 0 },
-                { "source": 4, "target": 0 },
-                { "source": 5, "target": 1 }
-            ]
+        "nodes": [
+            { "type": "creativeWork", id: "Wunschendorf" },
+            { "type": "creativeWork", id: "AndOnlyFineThreads" },
+            { "type": "creativeWork", id: "TheShore" },
+            { "type": "creativeWork", id: "ScholtzsHouse" },
+            { "type": "creativeWork", id: "LensProject" },
+            { "type": "creativeWork", id: "LaMortedlarbe" },
+            { "type": "creativeWork", id: "TheArtofNarrative" },
+            { "type": "subject", id: "Memory" },
+            { "type": "subject", id: "Identity" },
+            { "type": "subject", id: "Mining" },
+            { "type": "subject", id: "Exile" },
+            { "type": "subject", id: "Storytelling" }
+        ],
+        "links": [
+            { "source": 0, "target": 7 },
+            { "source": 0, "target": 10 },
+            { "source": 1, "target": 7 },
+            { "source": 2, "target": 8 },
+            { "source": 3, "target": 8 },
+            { "source": 3, "target": 10 },
+            { "source": 4, "target": 8 },
+            { "source": 4, "target": 9 },
+            { "source": 5, "target": 8 },
+            { "source": 5, "target": 9 },
+            { "source": 6, "target": 11 }
+        ]
     };
-
+    var nodes = graph.nodes;
+    var links = graph.links;
     var svg = d3.select('body').append('svg')
             .attr('width', width)
             .attr('height', height);
-
     var force = d3.layout.force()
             .size([width, height])
-            .linkDistance(500)
-            .gravity(0.08)
-            .linkStrength(0)
-            .charge(-500)
-            .friction(0)
-            .on("tick", tick);
-
-    var link = svg.selectAll('.link');
-//            .attr('x1', function(d) { return nodes[d.source].x; })
-//            .attr('y1', function(d) { return nodes[d.source].y; })
-//            .attr('x2', function(d) { return nodes[d.target].x; })
-//            .attr('y2', function(d) { return nodes[d.target].y; });
-
-    var node = svg.selectAll('.node');
-//            .data(nodes)
-//            .enter().append('circle')
-//            .attr('class', 'node')
-//            .attr('r', 10)
-//            .attr('cx', function(d) { return d.x; })
-//            .attr('cy', function(d) { return d.y; });
-
-    //var animationStep = 400;
-
-    function update() {
-        var nodes = graph.creativeWork;
-        var links = graph.creativeWorkSubject;
-
-        // Restart the force layout.
-        force.nodes(nodes)
-                .links(links)
-                .start();
-
-        // Update links.
-        link = link.data(links, function(d) { return d.target.id; });
-
-        link.exit().remove();
-
-        link.enter().insert("line", ".node")
-                .attr("class", "link");
-
-        // Update nodes.
-        node = node.data(nodes, function(d) { return d.id; });
-
-        node.exit().remove();
-
-        var nodeEnter = node.enter().append("g")
-                .attr("class", "node")
-                .on("click", click)
-                .call(force.drag);
-
-        nodeEnter.append("circle")
-                .attr("r", function(d) { return 10; });
-
-        nodeEnter.append("text")
-                .attr("dy", ".35em")
-                .text(function(d) { return d.id; });
-
-        node.select("circle")
-                .style("fill", color);
-    }
-
-    function tick() {
-
-        node.attr('cx', function(d) { return d.x; })
+            .nodes(nodes)
+            .links(links);
+    force.linkDistance(500);
+    force.gravity(0.08);
+    force.linkStrength(0);
+    force.charge(-500);
+    //force.friction(0.01);
+    var link = svg.selectAll('.link')
+            .data(links)
+            .enter().append('line')
+            .attr('class', 'link')
+            .attr('x1', function(d) { return nodes[d.source].x; })
+            .attr('y1', function(d) { return nodes[d.source].y; })
+            .attr('x2', function(d) { return nodes[d.target].x; })
+            .attr('y2', function(d) { return nodes[d.target].y; });
+    var node = svg.selectAll('.node')
+            .data(nodes)
+            .enter().append('circle')
+            .attr('class', 'node')
+            .attr('r', 10)
+            .attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; });
+    var animationStep = 400;
+    force.on('tick', function() {
+        node.transition().ease('linear').duration(animationStep)
+                .attr('cx', function(d) { return d.x; })
                 .attr('cy', function(d) { return d.y; });
-
-        link.attr('x1', function(d) { return d.source.x; })
+        link.transition().ease('linear').duration(animationStep)
+                .attr('x1', function(d) { return d.source.x; })
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
-//        node.transition().ease('linear').duration(animationStep)
-//                .attr('cx', function(d) { return d.x; })
-//                .attr('cy', function(d) { return d.y; });
-//
-//        link.transition().ease('linear').duration(animationStep)
-//                .attr('x1', function(d) { return d.source.x; })
-//                .attr('y1', function(d) { return d.source.y; })
-//                .attr('x2', function(d) { return d.target.x; })
-//                .attr('y2', function(d) { return d.target.y; });
-    }
-
-    function color(d) {
-        return d._children ? "#3182bd" // collapsed package
-                : d.children ? "#c6dbef" // expanded package
-                : "#fd8d3c"; // leaf node
-    }
-
-    function click(d) {
-        if (d3.event.defaultPrevented) return; // ignore drag
-        if (d.children) {
-            d._children = d.children;
-            d.children = null;
-        } else {
-            d.children = d._children;
-            d._children = null;
-        }
-        update();
-    }
-
-//    force.on('tick', function() {
-//
-//
-//
-//        // We only show one tick at a time, so stop the layout
-//        // for now.
-//
-//        force.stop();
-//
-//        // If we're animating the layout, continue after
-//        // a delay to allow the animation to take effect.
-//
-//        setTimeout(
-//            function() { force.start(); },
-//            animationStep
-//        );
-//
-//    });
-
-    update();
-
+        // We only show one tick at a time, so stop the layout
+        // for now.
+        force.stop();
+        // If we're animating the layout, continue after
+        // a delay to allow the animation to take effect.
+        setTimeout(
+                function() { force.start(); },
+                animationStep
+        );
+    });
+    force.start();
 </script>
 </body>
 </html>
