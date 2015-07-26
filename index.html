@@ -114,7 +114,8 @@
 
     function update() {
         var nodes = graph.creativeWork;
-        var links = graph.creativeWorkSubject;
+        //var links = graph.creativeWorkSubject;
+        var links = d3.layout.force().links(nodes);
 
         // Restart the force layout.
         force.nodes(nodes)
