@@ -52,25 +52,27 @@ http://bl.ocks.org/mbostock/1093130
 
     var graph = {
             "nodes": [
-                { "type": "creativeWork", "id": "Wunschendorf", "name": "Wunschendorf" },
-                { "type": "creativeWork", "id": "AndOnlyFineThreads", "name": "AndOnlyFineThreads" },
-                { "type": "creativeWork", "id": "TheShore", "name": "The Shore" },
-                { "type": "creativeWork", "id": "ScholtzsHouse", "name": "Scholtz's House" },
-                { "type": "creativeWork", "id": "LaMortedlarbe", "name": "La Morte d'larbe" },
-                { "type": "creativeWork", "id": "TheArtofNarrative", "name": "The Art of Narrative" },
-                { "type": "subject", id: "Memory", "name": "Memory" },
-                { "type": "subject", id: "Identity", "name": "Identity" },
-                { "type": "subject", id: "Mining", "name": "Mining" },
-                { "type": "subject", id: "Exile", "name": "Exile" },
-                { "type": "subject", id: "Storytelling", "name": "Storytelling" },
-                { "type": "type", id: "MovingImage", "name": "Film" },
-                { "type": "type", id: "Text", "name": "Text" }
+                { "index": "0", "type": "creativeWork", "id": "Wunschendorf", "name": "Wunschendorf" },
+                { "index": "1", "type": "creativeWork", "id": "AndOnlyFineThreads", "name": "AndOnlyFineThreads" },
+                { "index": "2", "type": "creativeWork", "id": "TheShore", "name": "The Shore" },
+                { "index": "3", "type": "creativeWork", "id": "ScholtzsHouse", "name": "Scholtz's House" },
+                { "index": "4", "type": "creativeWork", "id": "LaMortedlarbe", "name": "La Morte d'larbe" },
+                { "index": "5", "type": "creativeWork", "id": "TheArtofNarrative", "name": "The Art of Narrative" },
+                { "index": "6", "type": "subject", id: "Memory", "name": "Memory" },
+                { "index": "7", "type": "subject", id: "Identity", "name": "Identity" },
+                { "index": "8", "type": "subject", id: "Mining", "name": "Mining" },
+                { "index": "9", "type": "subject", id: "Exile", "name": "Exile" },
+                { "index": "10", "type": "subject", id: "Storytelling", "name": "Storytelling" },
+                { "index": "11", "type": "subject", id: "TheSea", "name": "The Sea" },
+                { "index": "12", "type": "type", id: "MovingImage", "name": "Film" },
+                { "index": "13", "type": "type", id: "Text", "name": "Text" }
             ],
             "creativeWorkSubject": [
                 { "source": 0, "target": 6 },
                 { "source": 0, "target": 9 },
                 { "source": 1, "target": 6 },
                 { "source": 2, "target": 7 },
+                { "source": 2, "target": 11 },
                 { "source": 3, "target": 7 },
                 { "source": 3, "target": 9 },
                 { "source": 4, "target": 7 },
@@ -118,6 +120,7 @@ http://bl.ocks.org/mbostock/1093130
                 return n.type === "creativeWork" || n.type === "subject";
             });
 
+            // todo: store ids in graph - generate indexes on the fly
             links = graph.creativeWorkSubject;
 
         } else {
@@ -126,6 +129,7 @@ http://bl.ocks.org/mbostock/1093130
                 return n.type === "creativeWork" || n.type === "type";
             });
 
+            // todo: store ids in graph - generate indexes on the fly
             links = graph.creativeWorkType;
         }
 
@@ -165,9 +169,6 @@ http://bl.ocks.org/mbostock/1093130
                 .attr("fill", color)
                 .attr("dy", ".35em")
                 .text(function(d) { return d.name; });
-
-        node.select("circle")
-                .style("fill", color);
     }
 
     function tick() {
