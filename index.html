@@ -18,21 +18,23 @@ http://bl.ocks.org/mbostock/1093130
             height: 100%;
         }
 
-        g.node circle {
-            cursor: pointer;
-            stroke: #3182bd;
-            stroke-width: 1.5px;
-        }
-
         g.node text {
-            font: 10px sans-serif;
+            font: 20px sans-serif;
             pointer-events: none;
             text-anchor: middle;
         }
 
+        g.node text.category {
+            font-weight: bold;
+        }
+
+        g.node text.creativeWork {
+
+        }
+
         line.link {
             fill: none;
-            stroke: #9ecae1;
+            stroke: #d6d2d6;
             stroke-width: 1.5px;
         }
 
@@ -43,28 +45,24 @@ http://bl.ocks.org/mbostock/1093130
 <script src="bower_components/lodash/lodash.js"></script>
 <script>
 
-    var width = 800;// window.innerWidth,
-        height = 600;// window.innerHeight;
+    var width = window.innerWidth,
+        height = window.innerHeight;
 
     var graph = {
-            "creativeWork": [
-                { id: "Wunschendorf" },
-                { id: "AndOnlyFineThreads" },
-                { id: "TheShore" },
-                { id: "ScholtzsHouse" },
-                { id: "LaMortedlarbe" },
-                { id: "TheArtofNarrative" }
-            ],
-            "subject": [
-                { id: "Memory" },
-                { id: "Identity" },
-                { id: "Mining" },
-                { id: "Exile" },
-                { id: "Storytelling" }
-            ],
-            "type": [
-                { id: "MovingImage" },
-                { id: "Text" }
+            "nodes": [
+                { "type": "creativeWork", "id": "Wunschendorf" },
+                { "type": "creativeWork", "id": "AndOnlyFineThreads" },
+                { "type": "creativeWork", "id": "TheShore" },
+                { "type": "creativeWork", "id": "ScholtzsHouse" },
+                { "type": "creativeWork", "id": "LaMortedlarbe" },
+                { "type": "creativeWork", "id": "TheArtofNarrative" },
+                { "type": "subject", id: "Memory" },
+                { "type": "subject", id: "Identity" },
+                { "type": "subject", id: "Mining" },
+                { "type": "subject", id: "Exile" },
+                { "type": "subject", id: "Storytelling" },
+                { "type": "type", id: "MovingImage" },
+                { "type": "type", id: "Text" }
             ],
             "creativeWorkSubject": [
                 { "source": 0, "target": 6 },
@@ -96,8 +94,9 @@ http://bl.ocks.org/mbostock/1093130
     var force = d3.layout.force()
             .size([width, height])
             .gravity(.05)
-            .distance(100)
-            .charge(-100)
+            .distance(250)
+            .charge(-1000)
+            .friction(.5)
             .on('tick', tick);
 
     svg.on('click', function() {
@@ -109,13 +108,17 @@ http://bl.ocks.org/mbostock/1093130
     var node = svg.selectAll('.node');
 
     function update() {
-        var nodes, links; nodes
+        var nodes, links;
 
         if (subject){
-            nodes = graph.creativeWork.concat(graph.subject);
+            nodes = _.filter(graph.nodes, function(n) {
+                return n.type === "creativeWork" || n.type === "subject";
+            });
             links = graph.creativeWorkSubject;
         } else {
-            nodes = graph.creativeWork.concat(graph.type);
+            nodes = _.filter(graph.nodes, function(n) {
+                return n.type === "creativeWork" || n.type === "type";
+            });
             links = graph.creativeWorkType;
         }
 
@@ -145,10 +148,17 @@ http://bl.ocks.org/mbostock/1093130
                 .on("click", click)
                 .call(force.drag);
 
-        nodeEnter.append("circle")
-                .attr("r", function(d) { return 10; });
+//        nodeEnter.append("circle")
+//                .attr("r", function(d) { return 10; });
 
         nodeEnter.append("text")
+                .attr("class", function(d){
+                    if(d.type === "creativeWork"){
+                        return 'creativeWork';
+                    }
+                    return 'category';
+                })
+                .attr("fill", color)
                 .attr("dy", ".35em")
                 .text(function(d) { return d.id; });
 
@@ -168,9 +178,7 @@ http://bl.ocks.org/mbostock/1093130
     }
 
     function color(d) {
-        return d._children ? "#3182bd" // collapsed package
-                : d.children ? "#c6dbef" // expanded package
-                : "#fd8d3c"; // leaf node
+        return d.type === "creativeWork" ? "#9a969a" : "#535253";
     }
 
     function click(d) {
