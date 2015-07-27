@@ -50,19 +50,19 @@ http://bl.ocks.org/mbostock/1093130
 
     var graph = {
             "nodes": [
-                { "type": "creativeWork", "id": "Wunschendorf" },
-                { "type": "creativeWork", "id": "AndOnlyFineThreads" },
-                { "type": "creativeWork", "id": "TheShore" },
-                { "type": "creativeWork", "id": "ScholtzsHouse" },
-                { "type": "creativeWork", "id": "LaMortedlarbe" },
-                { "type": "creativeWork", "id": "TheArtofNarrative" },
-                { "type": "subject", id: "Memory" },
-                { "type": "subject", id: "Identity" },
-                { "type": "subject", id: "Mining" },
-                { "type": "subject", id: "Exile" },
-                { "type": "subject", id: "Storytelling" },
-                { "type": "type", id: "MovingImage" },
-                { "type": "type", id: "Text" }
+                { "type": "creativeWork", "id": "Wunschendorf", "name": "Wunschendorf" },
+                { "type": "creativeWork", "id": "AndOnlyFineThreads", "name": "AndOnlyFineThreads" },
+                { "type": "creativeWork", "id": "TheShore", "name": "The Shore" },
+                { "type": "creativeWork", "id": "ScholtzsHouse", "name": "Scholtz's House" },
+                { "type": "creativeWork", "id": "LaMortedlarbe", "name": "La Morte d'larbe" },
+                { "type": "creativeWork", "id": "TheArtofNarrative", "name": "The Art of Narrative" },
+                { "type": "subject", id: "Memory", "name": "Memory" },
+                { "type": "subject", id: "Identity", "name": "Identity" },
+                { "type": "subject", id: "Mining", "name": "Mining" },
+                { "type": "subject", id: "Exile", "name": "Exile" },
+                { "type": "subject", id: "Storytelling", "name": "Storytelling" },
+                { "type": "type", id: "MovingImage", "name": "Film" },
+                { "type": "type", id: "Text", "name": "Text" }
             ],
             "creativeWorkSubject": [
                 { "source": 0, "target": 6 },
@@ -89,8 +89,6 @@ http://bl.ocks.org/mbostock/1093130
             .attr('width', width)
             .attr('height', height);
 
-    var subject = true;
-
     var force = d3.layout.force()
             .size([width, height])
             .gravity(.05)
@@ -98,6 +96,8 @@ http://bl.ocks.org/mbostock/1093130
             .charge(-1000)
             .friction(.5)
             .on('tick', tick);
+
+    var subject = true;
 
     svg.on('click', function() {
         subject = !subject;
@@ -111,14 +111,19 @@ http://bl.ocks.org/mbostock/1093130
         var nodes, links;
 
         if (subject){
+
             nodes = _.filter(graph.nodes, function(n) {
                 return n.type === "creativeWork" || n.type === "subject";
             });
+
             links = graph.creativeWorkSubject;
+
         } else {
+
             nodes = _.filter(graph.nodes, function(n) {
                 return n.type === "creativeWork" || n.type === "type";
             });
+
             links = graph.creativeWorkType;
         }
 
@@ -132,7 +137,7 @@ http://bl.ocks.org/mbostock/1093130
 
         link.exit().remove();
 
-        link.enter().insert("line", ".node")
+        link.enter().insert("line")
                 .attr("class", "link");
 
         // Update nodes.
@@ -148,9 +153,6 @@ http://bl.ocks.org/mbostock/1093130
                 .on("click", click)
                 .call(force.drag);
 
-//        nodeEnter.append("circle")
-//                .attr("r", function(d) { return 10; });
-
         nodeEnter.append("text")
                 .attr("class", function(d){
                     if(d.type === "creativeWork"){
@@ -160,7 +162,7 @@ http://bl.ocks.org/mbostock/1093130
                 })
                 .attr("fill", color)
                 .attr("dy", ".35em")
-                .text(function(d) { return d.id; });
+                .text(function(d) { return d.name; });
 
         node.select("circle")
                 .style("fill", color);
