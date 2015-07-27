@@ -19,7 +19,8 @@ http://bl.ocks.org/mbostock/1093130
         }
 
         g.node text {
-            font: 20px sans-serif;
+            font-size: 20px;
+            font-family: 'PT Sans', sans-serif;
             pointer-events: none;
             text-anchor: middle;
         }
@@ -34,11 +35,12 @@ http://bl.ocks.org/mbostock/1093130
 
         line.link {
             fill: none;
-            stroke: #d6d2d6;
+            stroke: #e3dfe3;
             stroke-width: 1.5px;
         }
 
     </style>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -94,7 +96,7 @@ http://bl.ocks.org/mbostock/1093130
             .gravity(.05)
             .distance(250)
             .charge(-1000)
-            .friction(.5)
+            .friction(.6)
             .on('tick', tick);
 
     var subject = true;
@@ -167,7 +169,6 @@ http://bl.ocks.org/mbostock/1093130
         node.select("circle")
                 .style("fill", color);
     }
-
 
     function tick() {
 
