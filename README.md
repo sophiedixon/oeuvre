@@ -1,3 +1,3 @@
 # oeuvre
 
-https://github.com/edsilv/oeuvre.git
+http://edsilv.github.io/oeuvre/
