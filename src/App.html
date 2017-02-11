@@ -1,0 +1,25 @@
+<Home title="Home again" />
+
+<script>
+
+import Home from './pages/Home.html';
+
+export default {
+	components: {
+		Home
+	},
+	onrender(){
+		setTimeout(() => {
+			console.log(this.get('loading'));
+			this.set({loading: false});
+			console.log(this.get('loading'));
+		}, 2000)
+	},
+	onteardown(){
+
+	},
+	methods: {
+
+	}
+}
+</script>

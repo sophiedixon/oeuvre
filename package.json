@@ -1,0 +1,47 @@
+{
+  "name": "oeuvre",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "mkdir": "mkdirp ./dist",
+    "build": "npm run mkdir && rollup -c && npm run copy-file",
+    "build:min": "production=true npm run mkdir && rollup -c && npm run copy-file",
+    "copy-file": "copyfiles ./index.html ./dist && copyfiles -f ./src/assets/fonts/* ./dist/fonts && copyfiles -f ./src/assets/images/* ./dist/images",
+    "clearn": "rimraf ./dist",
+    "watch": "rollup -c -w",
+    "serve": "live-server dist",
+    "start": "npm-run-all --parallel watch serve"
+  },
+  "files": [
+    "index.html"
+  ],
+  "keywords": [
+    "svelte",
+    "typescript"
+  ],
+  "author": "@edsilv",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "babel-runtime": "^6.22.0",
+    "copyfiles": "^1.0.0",
+    "install": "^0.8.2",
+    "live-server": "^1.1.0",
+    "mkdirp": "^0.5.1",
+    "npm": "^4.0.3",
+    "npm-run-all": "^3.1.2",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.41.4",
+    "rollup-plugin-async": "^1.2.0",
+    "rollup-plugin-commonjs": "^7.0.0",
+    "rollup-plugin-less": "^0.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-svelte": "^1.6.0",
+    "rollup-plugin-typescript": "^0.8.1",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-watch": "^2.5.0",
+    "typescript": "^2.0.10"
+  }
+}
