@@ -1,18 +1,54 @@
-<h1 class="title">{{title}}</h1>
+<h1 class="title">{{page}}</h1>
+
+<ul>
+	<li>
+		<a href="#" on:click='set({ page: "about" })'>About</a>
+	</li>
+	<li>
+		<a href="#" on:click='set({ page: "themes", mode: "theme" })'>Themes</a>
+	</li>
+	<li>
+		<a href="#" on:click='set({ page: "form", mode: "form" })'>Form</a>
+	</li>
+</ul>
+
+<div>
+	{{#if page === 'about'}}
+	<div>
+		About text
+	</div>
+	{{elseif page === 'themes'}}
+	<div>
+		<Graph graph={{graph}} mode={{mode}} />
+	</div>
+	{{else}}
+	<div>
+		<Graph graph={{graph}} mode={{mode}} />
+	</div>
+	{{/if}}
+</div>
 
 <script>
-	//import Link from '../components/Link.html';
+	import Graph from '../components/Graph.html';
 
 	export default {
+
 		components: {
-			//Link
+			Graph
 		},
 
-		data(){
+		onrender() {
+			console.log(this.get('page'));
+		},
+
+		data() {
 			return {
-               title: "Home"
+               page: 'about',
+			   graph: [],
+			   mode: 'theme'
             }
 		},
+
 		methods: {
 			
 		}

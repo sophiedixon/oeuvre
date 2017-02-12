@@ -1,1 +1,203 @@
-<h1>{{test}}</h1>
+<div id="graph">
+    
+</div>
+
+<script>
+
+    export default {
+
+		data() {
+			return {
+                graph: [],
+                mode: 'theme'
+            }
+		},
+
+        // methods: {
+        //     changeMode: function(mode) {
+        //         this.set("mode", mode);
+        //     }
+        // },
+
+        onrender() {
+            
+            var force;
+            var graph = this.get('graph');
+            var height = 600;
+            var link;
+            var mode = this.get('mode');
+            var node;
+            var svg;
+            var width = 800;
+
+            function init() {
+
+                svg = d3.select('#graph').append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('width', width).attr('height', height);
+
+                force = d3.layout.force()
+                        .size([width, height])
+                        .gravity(.05)
+                        .distance(200)
+                        .charge(-1000)
+                        .friction(.6)
+                        .on('tick', tick);
+
+                link = svg.selectAll('.link');
+                node = svg.selectAll('.node');
+            }
+
+            function update() {
+                let result;
+
+                if (mode === "theme") {
+                    result = getConnections("theme");
+                } else {
+                    result = getConnections("form");
+                }
+
+                // Restart the force layout.
+                force.nodes(result.nodes)
+                        .links(result.links)
+                        .start();
+
+                // Update links.
+                link = link.data(result.links);
+
+                link.exit().remove();
+
+                link.enter().insert("line")
+                        .attr("class", "link");
+
+                // Update nodes.
+                node = node.data(result.nodes, function(d) {
+                    return d.id;
+                });
+
+                node.exit().remove();
+
+                var nodeEnter = node.enter()
+                        .append("g")
+                        .attr("class", "node")
+
+                        .call(force.drag);
+
+                nodeEnter.append("text")
+                        .attr("class", function(d){
+                            if(d.type === "creativeWork"){
+                                return 'creativeWork';
+                            }
+                            return 'category';
+                        })
+                        .attr("fill", color)
+                        .attr("dy", ".35em")
+                        .text(function(d) { return d.name; })
+                        .on("click", click);
+            }
+
+            function getConnections(type) {
+
+                // first get an array of all creativeworks and types combined
+                var nodes = _.filter(graph, function(n) {
+                    return n.type === "creativeWork" || n.type === type;
+                });
+
+                // now get an array of how each creativework and type is connected
+                var links = [];
+
+                for (var i = 0; i < nodes.length; i++) {
+                    var n = nodes[i];
+
+                    if (n.type.toLowerCase() === "creativework") {
+                        var t = n[type].split(',');
+                        for (var j = 0; j < t.length; j++){
+                            // for each connection, push a new object to links
+                            links.push({
+                                "source": i,
+                                "target": _.findIndex(nodes, function(x) {
+                                    return x.id.toLowerCase() === t[j].trim().toLowerCase();
+                                })
+                            });
+                        }
+                    }
+                }
+
+                return {
+                    nodes: nodes,
+                    links: links
+                };
+            }
+
+            function tick() {
+
+                link.attr('x1', function(d) { return d.source.x; })
+                    .attr('y1', function(d) { return d.source.y; })
+                    .attr('x2', function(d) { return d.target.x; })
+                    .attr('y2', function(d) { return d.target.y; });
+
+                node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+                var radius = 80;
+
+                node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
+                    .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
+            }
+
+            function color(d) {
+                return d.type === "creativeWork" ? "#9a969a" : "#535253";
+            }
+
+            function click(d) {
+                if (d3.event.defaultPrevented) return; // ignore drag
+                switch (d.type) {
+                    case 'creativeWork':
+                        console.log('creativeWork:', d.id);
+                        break;
+                    case 'theme':
+                        console.log('theme:', d.id);
+                        break;
+                    case 'form':
+                        console.log('form:', d.id);
+                        break;
+                }
+  
+                update();
+            }
+
+            init();
+            update();
+        }
+	}
+
+</script>
+
+<style>
+    
+    g.node text {
+        font-size: 20px;
+        font-family: 'PT Sans', sans-serif;
+        text-anchor: middle;
+        cursor: pointer;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+    }
+
+    g.node text.category {
+        font-weight: bold;
+    }
+
+    g.node text.creativeWork {
+
+    }
+
+    line.link {
+        fill: none;
+        stroke: #e3dfe3;
+        stroke-width: 1px;
+    }
+
+</style>
