@@ -1,0 +1,31 @@
+<div id="details">
+    {{#if content.title}}
+        <h2>{{content.title}}</h2>
+    {{/if}}
+    {{#if content.text}}
+        <p>{{{content.text}}}</p>
+    {{/if}}
+    {{#if content.link}}
+        <a href="{{content.link}}">Read more</a>
+    {{/if}}
+    {{#if content.theme}}
+        <h3>Themes</h3>
+        <ul>
+            {{#each content.theme as theme}}
+                <li>{{theme}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+    {{#if content.form}}
+        <h3>Form</h3>
+        {{content.form}}
+    {{/if}}
+</div>
+
+<script>
+    
+    export default {
+
+    }
+
+</script>

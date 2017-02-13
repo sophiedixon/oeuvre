@@ -1,3 +1,108 @@
+@font-family: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif;
+@font-family-sans-serif: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+@graph-line-color: #e3dfe3;
+@font-color: grey;
+@font-highlighted-color: #000;
+
 body{
-	
+	font-family: @font-family;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    line-height: 1.5em;
+}
+
+header {
+
+    padding: 30px 0px 0px 15px;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        font-family: @font-family-sans-serif;
+        display: block;
+        text-align: center;
+        padding: 15px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: @font-color;
+        letter-spacing: .2em;
+        .unselectable();
+        &.selected {
+            color: @font-highlighted-color;
+        }
+    }
+}
+
+main {
+    overflow: hidden;
+}
+
+#details {
+    float: left;
+    width: 400px;
+    margin: 0px 0px 0px 30px;
+    
+    p {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+h1, h2, h3 {
+    font-family: @font-family-sans-serif;
+}
+
+.unselectable() {
+    -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+                user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+}
+
+#graph {
+    float: left;
+    width: 800px;
+    height: 600px;
+
+    g.node text {
+        font-size: 20px;
+        font-family: @font-family-sans-serif;
+        text-anchor: middle;
+        cursor: pointer;
+        color: @font-color;
+        .unselectable();
+    }
+
+    g.node text.category {
+        color: @font-highlighted-color;
+    }
+
+    g.node text.creativeWork {
+
+    }
+
+    line.link {
+        fill: none;
+        stroke: @graph-line-color;
+        stroke-width: 1px;
+    }
 }

@@ -1,46 +1,95 @@
-<Home title="Home again" graph={{graph}} />
+<header>
+	<ul>
+		<li>
+			{{#if page === 'about'}}
+				<a href="#" class="selected" on:click='about()'>About</a>
+			{{else}}
+				<a href="#" on:click='about()'>About</a>
+			{{/if}}
+		</li>
+		<li>
+			{{#if page === 'themes'}}
+				<a href="#" class="selected" on:click='themes()'>Themes</a>
+			{{else}}
+				<a href="#" on:click='themes()'>Themes</a>
+			{{/if}}
+		</li>
+		<li>
+			{{#if page === 'form'}}
+				<a href="#" class="selected" on:click='form()'>Form</a>
+			{{else}}
+				<a href="#" on:click='form()'>Form</a>
+			{{/if}}
+		</li>
+	</ul>
+</header>
+
+<main>
+	
+	{{#if page === 'about'}}
+		<Details content={{aboutdetails}} />
+	{{elseif page === 'themes'}}
+		<Details content={{details}} />
+		<Graph data={{graphdata}} type={{graphtype}} on:nodeselected='nodeSelected(event)' />
+	{{else}}
+		<Details content={{details}} />
+		<Graph data={{graphdata}} type={{graphtype}} on:nodeselected='nodeSelected(event)' />
+	{{/if}}
+
+</main>
 
 <script>
 
-import Home from './pages/Home.html';
+import Details from './components/Details.html';
+import Graph from './components/Graph.html';
 
 export default {
 	
 	components: {
-		Home
-	},
-
-	onrender(){
-
-	},
-
-	data() {
-		return {
-			graph: [
-                    { "type": "creativeWork", "form": "MovingImage", "theme": "Memory, Exile", "id": "Wunschendorf", "name": "Wunschendorf" },
-                    { "type": "creativeWork", "form": "Text", "theme": "Memory", "id": "AndOnlyFineThreads", "name": "AndOnlyFineThreads" },
-                    { "type": "creativeWork", "form": "MovingImage", "theme": "Identity, TheSea", "id": "TheShore", "name": "The Shore" },
-                    { "type": "creativeWork", "form": "MovingImage", "theme": "Identity, Exile", "id": "ScholtzsHouse", "name": "Scholtz's House" },
-                    { "type": "creativeWork", "form": "MovingImage", "theme": "Identity, Mining", "id": "LaMortedlarbe", "name": "La Morte d'larbe" },
-                    { "type": "creativeWork", "form": "Text", "theme": "Storytelling", "id": "TheArtofNarrative", "name": "The Art of Narrative" },
-                    { "type": "theme", id: "Memory", "name": "Memory" },
-                    { "type": "theme", id: "Identity", "name": "Identity" },
-                    { "type": "theme", id: "Mining", "name": "Mining" },
-                    { "type": "theme", id: "Exile", "name": "Exile" },
-                    { "type": "theme", id: "Storytelling", "name": "Storytelling" },
-                    { "type": "theme", id: "TheSea", "name": "The Sea" },
-                    { "type": "form", id: "MovingImage", "name": "Film" },
-                    { "type": "form", id: "Text", "name": "Text" }
-                ]
-		}
-	},
-
-	onteardown(){
-
+		Details,
+		Graph
 	},
 
 	methods: {
+		about: function() {
+			this.set({ 
+				page: "about", 
+				details: this.get('aboutdetails')
+			});
+		},
+		themes: function() {
+			this.set({ 
+				page: "themes", 
+				graphtype: "theme", 
+				details: this.get('themedetails')
+			});
+		},
+		form: function() {
+			this.set({ 
+				page: "form", 
+				graphtype: "form", 
+				details: this.get('formdetails')
+			});
+		},
+		nodeSelected: function(node) {
+			this.set({
+				details: {
+					title: node.label,
+					text: node.details,
+					link: node.link,
+					theme: node.theme ? node.theme.split(',') : null,
+					form: node.form
+				}
+			});
+		}
+	}
+
+}
+
+</script>
+
+<style>
+	.title {
 
 	}
-}
-</script>
+</style>
