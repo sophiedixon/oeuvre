@@ -1,8 +1,7 @@
+@import "dark";
+
 @font-family: Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif;
 @font-family-sans-serif: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-@graph-line-color: #e3dfe3;
-@font-color: grey;
-@font-highlighted-color: #000;
 
 body{
 	font-family: @font-family;
@@ -10,6 +9,28 @@ body{
     padding: 0px;
     overflow: hidden;
     line-height: 1.5em;
+    background-color: @body-bg-color;
+    color: @font-color;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link {
+    color: @link-color;
+}
+
+a:visited {
+    color: @link-color;
+}
+
+a:hover {
+    color: @link-color;
+}
+
+a:active {
+    color: @link-color;
 }
 
 header {
@@ -34,11 +55,33 @@ header {
         padding: 15px;
         text-decoration: none;
         text-transform: uppercase;
-        color: @font-color;
         letter-spacing: .2em;
         .unselectable();
         &.selected {
-            color: @font-highlighted-color;
+            &:link {
+                color: @font-highlighted-color;
+            }
+            &:visited {
+                color: @font-highlighted-color;
+            }
+            &:hover {
+                color: @font-highlighted-color;
+            }
+            &:active {
+                color: @font-highlighted-color;
+            }
+        }
+        &:link {
+            color: @font-color;
+        }
+        &:visited {
+            color: @font-color;
+        }
+        &:hover {
+            color: @font-color;
+        }
+        &:active {
+            color: @font-color;
         }
     }
 }
@@ -66,6 +109,7 @@ main {
 
 h1, h2, h3 {
     font-family: @font-family-sans-serif;
+    color: @font-highlighted-color;
 }
 
 .unselectable() {
@@ -84,20 +128,20 @@ h1, h2, h3 {
     height: 600px;
 
     g.node text {
-        font-size: 20px;
+        font-size: 18px;
         font-family: @font-family-sans-serif;
         text-anchor: middle;
         cursor: pointer;
-        color: @font-color;
         .unselectable();
     }
 
-    g.node text.category {
-        color: @font-highlighted-color;
+    g.node text.primary {
+        fill: @font-color;
     }
 
-    g.node text.creativeWork {
-
+    g.node text.category {
+        fill: @font-highlighted-color;
+        font-size: 22px;
     }
 
     line.link {

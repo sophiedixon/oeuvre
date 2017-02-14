@@ -9,14 +9,15 @@
         onrender() {
 
             const $graph = $('#graph');
-            var force;
-            var graph = this.get('data');
-            var height = $graph.height();
-            var link;
-            var node;
+            var force, link, node;
+            const graph = this.get('data');
+            const height = $graph.height();
             var svg;
-            var type = this.get('type');
-            var width = $graph.width();
+            const primarytype = this.get('primarytype');
+            const primarytypecolor = this.get('primarytypecolor');
+            const categorytype = this.get('categorytype');
+            const categorytypecolor = this.get('categorytypecolor');
+            const width = $graph.width();
 
             init = init.bind(this);
             update = update.bind(this);
@@ -40,7 +41,7 @@
             }
 
             function update() {
-                let result = getConnections(type);
+                const result = getConnections();
 
                 // Restart the force layout.
                 force.nodes(result.nodes)
@@ -62,40 +63,40 @@
 
                 node.exit().remove();
 
-                var nodeEnter = node.enter()
+                const nodeEnter = node.enter()
                         .append("g")
                         .attr("class", "node")
                         .call(force.drag);
 
                 nodeEnter.append("text")
                         .attr("class", function(d){
-                            if(d.type === "creativeWork"){
-                                return 'creativeWork';
+                            if(d.type.toLowerCase() === primarytype.toLowerCase()){
+                                return 'primary';
                             }
                             return 'category';
                         })
-                        .attr("fill", color)
+                        //.attr("fill", color)
                         .attr("dy", ".35em")
                         .text(function(d) { return d.label; })
                         .on("click", click);
             }
 
-            function getConnections(type) {
+            function getConnections() {
 
-                // first get an array of all creativeworks and types combined
-                var nodes = graph.filter(function(n) {
-                    return n.type.toLowerCase() === "creativework" || n.type.toLowerCase() === type.toLowerCase();
+                // first get an array of all primary and category types combined
+                const nodes = graph.filter(function(n) {
+                    return n.type.toLowerCase() === primarytype.toLowerCase() || n.type.toLowerCase() === categorytype.toLowerCase();
                 });
 
-                // now get an array of how each creativework and type is connected
-                var links = [];
+                // now get an array of how each primarytype and categorytype is connected
+                const links = [];
 
-                for (var i = 0; i < nodes.length; i++) {
-                    var n = nodes[i];
+                for (let i = 0; i < nodes.length; i++) {
+                    const n = nodes[i];
 
-                    if (n.type.toLowerCase() === "creativework") {
-                        var t = n[type].split(',');
-                        for (var j = 0; j < t.length; j++){
+                    if (n.type.toLowerCase() === primarytype.toLowerCase()) {
+                        const t = n[categorytype].split(',');
+                        for (let j = 0; j < t.length; j++){
                             // for each connection, push a new object to links
                             links.push({
                                 "source": i,
@@ -129,7 +130,7 @@
             }
 
             function color(d) {
-                return d.type === "creativeWork" ? "#9a969a" : "#535253";
+                return d.type.toLowerCase() === primarytype.toLowerCase() ? primarytypecolor : categorytypecolor;
             }
 
             function click(d) {

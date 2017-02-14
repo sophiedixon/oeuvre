@@ -30,10 +30,10 @@
 		<Details content={{aboutdetails}} />
 	{{elseif page === 'themes'}}
 		<Details content={{details}} />
-		<Graph data={{graphdata}} type={{graphtype}} on:nodeselected='nodeSelected(event)' />
+		<Graph data={{graphdata}} primarytype='creativeWork' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
 	{{else}}
 		<Details content={{details}} />
-		<Graph data={{graphdata}} type={{graphtype}} on:nodeselected='nodeSelected(event)' />
+		<Graph data={{graphdata}} primarytype='creativeWork' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
 	{{/if}}
 
 </main>
@@ -60,14 +60,14 @@ export default {
 		themes: function() {
 			this.set({ 
 				page: "themes", 
-				graphtype: "theme", 
+				graphcategory: "theme", 
 				details: this.get('themedetails')
 			});
 		},
 		form: function() {
 			this.set({ 
 				page: "form", 
-				graphtype: "form", 
+				graphcategory: "form", 
 				details: this.get('formdetails')
 			});
 		},

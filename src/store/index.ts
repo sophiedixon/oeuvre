@@ -1,6 +1,6 @@
 export default {
 	page: 'about',
-	graphtype: "theme",
+	graphcategory: "theme",
 	graphdata: [
 		{ 
 			"type": "creativeWork", 
