@@ -30,10 +30,10 @@
 		<Details content={{aboutdetails}} />
 	{{elseif page === 'themes'}}
 		<Details content={{details}} />
-		<Graph data={{graphdata}} primarytype='creativeWork' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
+		<Graph data={{graphdata}} primarytype='work' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
 	{{else}}
 		<Details content={{details}} />
-		<Graph data={{graphdata}} primarytype='creativeWork' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
+		<Graph data={{graphdata}} primarytype='work' categorytype={{graphcategory}} on:nodeselected='nodeSelected(event)' />
 	{{/if}}
 
 </main>
@@ -78,7 +78,8 @@ export default {
 					text: node.details,
 					link: node.link,
 					theme: node.theme ? node.theme.split(',') : null,
-					form: node.form
+					form: node.form,
+					image: node.image
 				}
 			});
 		}
@@ -87,9 +88,3 @@ export default {
 }
 
 </script>
-
-<style>
-	.title {
-
-	}
-</style>

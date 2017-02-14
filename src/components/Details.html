@@ -2,24 +2,37 @@
     {{#if content.title}}
         <h2>{{content.title}}</h2>
     {{/if}}
+    {{#if content.image && content.link}}
+        <a href="{{content.link}}">
+            <img src="/images/{{content.image}}" />
+        </a>
+    {{elseif content.image}}
+        <img src="/images/{{content.image}}" />
+    {{/if}}
     {{#if content.text}}
         <p>{{{content.text}}}</p>
     {{/if}}
     {{#if content.link}}
-        <a href="{{content.link}}">Read more</a>
+        <a href="{{content.link}}" class="readmore">Read more</a>
     {{/if}}
-    {{#if content.theme}}
-        <h3>Themes</h3>
-        <ul>
-            {{#each content.theme as theme}}
-                <li>{{theme}}</li>
-            {{/each}}
-        </ul>
-    {{/if}}
-    {{#if content.form}}
-        <h3>Form</h3>
-        {{content.form}}
-    {{/if}}
+    <div class="types">
+        {{#if content.theme}}
+            <div class="type">
+                <h3>Themes</h3>
+                <ul>
+                    {{#each content.theme as theme}}
+                        <li>{{theme}}</li>
+                    {{/each}}
+                </ul>
+            </div>            
+        {{/if}}
+        {{#if content.form}}
+            <div class="type">
+                <h3>Form</h3>
+                {{content.form}}
+            </div>
+        {{/if}}
+    </div>
 </div>
 
 <script>
