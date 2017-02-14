@@ -1,4 +1,6 @@
-##src/App.html
+##How do you set a class inline?
+
+    src/App.html
 
 ```
 {{#if page === 'about'}}
@@ -7,9 +9,10 @@
     <a href="#" on:click='about()'>About</a>
 {{/if}}
 ```
-How do you change the class inline?
 
+##Why do I have to repeat the Details and Graph components to force them to render? Shouldn't updating the `graphcategory` and `details` data trigger this?
 
+    src/App.html
 
 ```
 {{#if page === 'about'}}
@@ -23,10 +26,12 @@ How do you change the class inline?
 {{/if}}
 
 ```
-Why do you I have to repeat content to force it to render?
 
+##How do you do nested #if statements?
 
-##/src/components/Details.html
+    /src/components/Details.html
+
+I'm currently duplicating the img tag:
 
 ```
 {{#if content.image && content.link}}
@@ -37,9 +42,13 @@ Why do you I have to repeat content to force it to render?
     <img src="/images/{{content.image}}" />
 {{/if}}
 ```
-How do you do nested #if statements?
 
+The following nested if statements gives you this compiler error:
 
+```
+(svelte plugin) (9:58) Unexpected block closing tag
+ 7:     {{/if}}
+```
 
 ```
 {{#if content.image}}
@@ -47,10 +56,4 @@ How do you do nested #if statements?
     <img src="/images/{{content.image}}" />
     {{#if content.link}}</a>{{/if}}
 {{/if}}
-```
-Gives you this compiler error:
-
-```
-(svelte plugin) (9:58) Unexpected block closing tag
- 7:     {{/if}}
 ```

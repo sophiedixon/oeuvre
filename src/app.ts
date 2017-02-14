@@ -6,7 +6,3 @@ const app = new App({
 	target: document.querySelector('body'),
 	data: store
 });
-
-// const listener = app.on('nodeselected', event => {
-//   console.log( `A thing happened: ${event.thing}` );
-// });

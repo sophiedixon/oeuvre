@@ -1,6 +1,7 @@
 export default {
 	"page": "about",
 	"graphcategory": "theme",
+	"noderadius": 80,
 	"graphdata": [
 		{ 
 			"type": "work", 

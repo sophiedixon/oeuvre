@@ -18,11 +18,9 @@
             const categorytype = this.get('categorytype');
             const categorytypecolor = this.get('categorytypecolor');
             const width = $graph.width();
+            const radius = this.get('noderadius');
 
-            init = init.bind(this);
-            update = update.bind(this);
-            getConnections = getConnections.bind(this);
-            click = click.bind(this);
+            click = click.bind(this); // allows using this.fire() etc...
 
             function init() {
 
@@ -87,7 +85,7 @@
                     return n.type.toLowerCase() === primarytype.toLowerCase() || n.type.toLowerCase() === categorytype.toLowerCase();
                 });
 
-                // now get an array of how each primarytype and categorytype is connected
+                // now get an array of how each primary and category type is connected
                 const links = [];
 
                 for (let i = 0; i < nodes.length; i++) {
@@ -121,8 +119,6 @@
                     .attr('y2', function(d) { return d.target.y; });
 
                 node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-                var radius = 80;
 
                 node.attr("cx", function(d) { return d.x = Math.max(radius, Math.min(width - radius, d.x)); })
                     .attr("cy", function(d) { return d.y = Math.max(radius, Math.min(height - radius, d.y)); });
