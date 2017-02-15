@@ -3,11 +3,20 @@
         <h2>{{content.title}}</h2>
     {{/if}}
     {{#if content.image && content.link}}
-        <a href="{{content.link}}">
-            <img src="/images/{{content.image}}" />
-        </a>
+        <div class="image-or-video">
+            <a href="{{content.link}}">
+                <img src="/images/{{content.image}}" />
+            </a>
+        </div>
     {{elseif content.image}}
-        <img src="/images/{{content.image}}" />
+        <div class="image-or-video">
+            <img src="/images/{{content.image}}" />
+        </div>
+    {{/if}}
+    {{#if content.vimeo}}
+        <div class="image-or-video">
+            <iframe src="https://player.vimeo.com/video/{{content.vimeo}}?title=0&byline=0&portrait=0" width="400" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
     {{/if}}
     {{#if content.text}}
         <p>{{{content.text}}}</p>
