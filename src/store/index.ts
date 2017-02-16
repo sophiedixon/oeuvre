@@ -68,6 +68,36 @@ export default {
 			"label": "Essay", 
 			"details": "Long-form critical reflections"
 		}
+		{ 
+			"type": "form", 
+			"id": "Writing", 
+			"label": "Writing", 
+			"details": "Creative writing, meanderings and thoughts"
+		}
+		{ 
+			"type": "form", 
+			"id": "Workshop", 
+			"label": "Workshop", 
+			"details": "Workshop description"
+		}
+		{ 
+			"type": "form", 
+			"id": "Interview", 
+			"label": "Interview", 
+			"details": "Interviews conducted for research purposes and for incorporation into other works"
+		}
+		{ 
+			"type": "form", 
+			"id": "Virtual Reality", 
+			"label": "Virtual Reality", 
+			"details": "Virtual Reality experiments using the HTC Vive"
+		}
+		{ 
+			"type": "form", 
+			"id": "Archive", 
+			"label": "Archive", 
+			"details": "Archive description"
+		}
 	],
 	"details": {},
 	"formdetails": { 
