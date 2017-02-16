@@ -33,6 +33,30 @@ export default {
 			"details": "Story description."
 		},
 		{ 
+			"type": "theme", 
+			"id": "Narrative", 
+			"label": "Narrative", 
+			"details": "Narative description."
+		},
+		{ 
+			"type": "theme", 
+			"id": "Oral History", 
+			"label": "Oral History", 
+			"details": "Oral History description."
+		},
+		{ 
+			"type": "theme", 
+			"id": "Interactivity", 
+			"label": "Interactivity ", 
+			"details": "Interactivity description."
+		},
+		{ 
+			"type": "theme", 
+			"id": "Photogrammetry", 
+			"label": "Photogrammetry ", 
+			"details": "Photogrammetry description."
+		},
+		{ 
 			"type": "form", 
 			"id": "MovingImage", 
 			"label": "Moving Image", 
