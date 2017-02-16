@@ -15,6 +15,22 @@ export default {
 			"link": "http://sophie-dixon.com/project/blood-moon/"
 		},
 		{ 
+			"type": "work", 
+			"form": "Essay", 
+			"theme": "Remembering, Place, Story, Oral History", 
+			"id": "LifeStory", 
+			"label": "Life Story",
+			"details": "Life Story description",
+		},
+		{ 
+			"type": "work", 
+			"form": "Writing", 
+			"theme": "Remembering, Place, Story, Narrative", 
+			"id": "Here", 
+			"label": "Here",
+			"details": "Here description",
+		},
+		{ 
 			"type": "theme", 
 			"id": "Remembering", 
 			"label": "Remembering", 
@@ -97,7 +113,7 @@ export default {
 			"id": "Archive", 
 			"label": "Archive", 
 			"details": "Archive description"
-		}
+		},
 	],
 	"details": {},
 	"formdetails": { 
