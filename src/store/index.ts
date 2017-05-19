@@ -31,6 +31,14 @@ export default {
 			"details": "Here description",
 		},
 		{ 
+			"type": "work", 
+			"form": "Workshop", 
+			"theme": "Photogrammetry", 
+			"id": "PhotogrammetryWorkshop", 
+			"label": "Photogrammetry Workshop",
+			"details": "Photogrammetry Workshop description",
+		},
+		{ 
 			"type": "theme", 
 			"id": "Remembering", 
 			"label": "Remembering", 
